@@ -3,6 +3,9 @@ const path = require("path");
 
 module.exports = {
   webpack(config, options) {
+    /* config.resolve.alias = {
+      '@': path.resolve(__dirname, 'src'),
+    }; */
     if (!options.isServer) {
       config.plugins.push(
         new NextFederationPlugin({

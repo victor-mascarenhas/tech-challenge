@@ -1,17 +1,36 @@
 {
   "extends": "@repo/typescript-config/nextjs.json",
   "compilerOptions": {
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
+    "module": "Node16",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@shared/*": [
+        "./src/shared"
+      ],
+      "@hooks/*": [
+        "./src/hooks/*"
+      ],
+      "@repositories/*": [
+        "./src/repositories/*"
+      ],
+      "@services/*": [
+        "./src/services/*"
+      ],
+      "@libs/db": [
+        "../../libs/db"
+      ]
+    }
   },
   "include": [
     "next-env.d.ts",
+    "declarations.d.ts",
+    "src/**/*",
     "next.config.js",
-    "**/*.ts",
-    "**/*.tsx",
     ".next/types/**/*.ts"
   ],
   "exclude": [
