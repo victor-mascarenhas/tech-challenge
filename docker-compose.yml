@@ -21,6 +21,32 @@ services:
       - 3001:3001
     networks:
       - app_network
+  api:
+    container_name: api
+    build:
+      context: .
+      dockerfile: ./apps/api/Dockerfile
+    restart: always
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/mydb
+    depends_on:
+      - mongo
+    ports:
+      - 3002:3002
+    networks:
+      - app_network
+  mongo:
+    container_name: db
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app_network
+
+volumes:
+  mongo-data:
 
 # Define a network, which allows containers to communicate
 # with each other, by using their container name as a hostname
