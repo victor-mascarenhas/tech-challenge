@@ -80,6 +80,7 @@ class UserController {
     res.status(200).json({
       message: 'Usuário autenticado com sucesso',
       result: {
+        username: user[0].username,
         token: jwt.sign(userToTokenize, JWT_SECRET, { expiresIn: '12h' })
       }
     })

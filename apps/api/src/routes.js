@@ -1,7 +1,7 @@
-const { Router } = require('express')
-const AccountController = require('./controller/Account')
-const accountController = new AccountController({})
-const router = Router()
+const { Router } = require("express");
+const AccountController = require("./controller/Account");
+const accountController = new AccountController({});
+const router = Router();
 
 /**
  * @swagger
@@ -15,7 +15,7 @@ const router = Router()
  *       200:
  *         description: Lista de contas encontradas
  */
-router.get('/account', accountController.find.bind(accountController))
+router.get("/account", accountController.find.bind(accountController));
 
 /**
  * @swagger
@@ -29,7 +29,44 @@ router.get('/account', accountController.find.bind(accountController))
  *       201:
  *         description: Transação criada com sucesso
  */
-router.post('/account/transaction', accountController.createTransaction.bind(accountController))
+router.post(
+  "/account/transaction",
+  accountController.createTransaction.bind(accountController)
+);
+
+/**
+ * @swagger
+ * /account/transaction/{transactionId}:
+ *   put:
+ *     summary: Atualiza uma transação
+ *     tags: [Transações]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Transação atualizada com sucesso
+ */
+router.put(
+  "/account/transaction/:transactionId",
+  accountController.updateTransaction.bind(accountController)
+);
+
+/**
+ * @swagger
+ * /account/transaction/{transactionId}:
+ *   delete:
+ *     summary: Apaga uma transação
+ *     tags: [Transações]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Transação atualizada com sucesso
+ */
+router.put(
+  "/account/transaction/:transactionId/delete",
+  accountController.deleteTransaction.bind(accountController)
+);
 
 /**
  * @swagger
@@ -52,6 +89,9 @@ router.post('/account/transaction', accountController.createTransaction.bind(acc
  *       401:
  *         description: Token invalido
  */
-router.get('/account/:accountId/statement', accountController.getStatment.bind(accountController))
+router.get(
+  "/account/:accountId/statement",
+  accountController.getStatment.bind(accountController)
+);
 
-module.exports = router
+module.exports = router;
