@@ -6,7 +6,8 @@ import InputCheckbox from "@/components/forms/InputCheckbox";
 import validaEmail from "@/shared/utils/validaEmail";
 import Button from "@/components/ui/Button";
 import Image from "next/image";
-import userService, { NovaContaDTO } from "@/services/userService";
+import userService from "@/services/userService";
+import { NovaContaDTO } from "@/shared/models/User";
 
 
 

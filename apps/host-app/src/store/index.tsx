@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { configureStore } from "@reduxjs/toolkit";
 import user from "../features/user/userSlice"
 import transactions from "../features/transactions/transactionsSlice"

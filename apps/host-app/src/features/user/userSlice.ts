@@ -4,7 +4,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import buildAccountService from "@/services/accountService";
 import { Result } from "@/shared/models/Account";
 
-interface userState {
+export interface userState {
   token: string | null;
   username: string | null;
   email: string | null;

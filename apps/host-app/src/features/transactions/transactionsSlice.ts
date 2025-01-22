@@ -7,7 +7,7 @@ import {
 import { TransactionForm } from "@/components/layout/transacao/FormNovaTransacao";
 import buildAccountService from "@/services/accountService";
 
-interface TransactionsState {
+export interface TransactionsState {
   transactions: Transaction[];
   balance: number;
 }
