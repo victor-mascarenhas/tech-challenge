@@ -25,7 +25,7 @@ type AxiosServiceProtocol = {
 
 export const buildAxiosService = (): AxiosServiceProtocol => {
   const axiosInstance = axios.create({
-    baseURL: "http://localhost:3002",
+    baseURL: "http://3.140.183.228:3002",
     headers: {
       "Content-Type": "application/json",
     },

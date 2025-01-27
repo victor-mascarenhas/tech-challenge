@@ -19,7 +19,7 @@ module.exports = {
     port: 3001,
   },
   output: {
-    publicPath: "http://localhost:3001/",
+    publicPath: "http://3.140.183.228:3001/",
   },
   resolve: {
     extensions: [".ts", ".js", ".tsx"],
