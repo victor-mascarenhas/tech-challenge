@@ -2,7 +2,7 @@
 
 import { ChangeEvent } from "react";
 import InputLabel from "./InputLabel";
-import {InputOptions} from '../../shared/models/Input'
+import { InputOptions } from "../../shared/models/Input";
 
 export default function Input(options: InputOptions) {
   const style = options.style ?? "ligth";
@@ -20,8 +20,14 @@ export default function Input(options: InputOptions) {
   }
 
   return (
-    <div className={`flex flex-col gap-1 w-full h-full ${options.className ?? ""}`}>
-      <InputLabel htmlFor={options.name} text={options.label} textBold={options.labelTextBold} />
+    <div
+      className={`flex flex-col gap-1 w-full h-full ${options.className ?? ""}`}
+    >
+      <InputLabel
+        htmlFor={options.name}
+        text={options.label}
+        textBold={options.labelTextBold}
+      />
       <input
         className={`input bg-white w-full border-[1px] ${
           style === "ligth" ? "border-fiap-light-blue" : "border-fiap-navy-blue"

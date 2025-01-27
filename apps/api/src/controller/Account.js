@@ -1,5 +1,4 @@
 const TransactionDTO = require("../models/DetailedAccount");
-require("dotenv").config();
 
 class AccountController {
   constructor(di = {}) {
@@ -69,7 +68,7 @@ class AccountController {
     const { deleteTransaction, transactionRepository } = this.di;
     const { transactionId } = req.params;
     const transaction = await deleteTransaction({
-      transactionId: transactionId,
+      id: transactionId,
       repository: transactionRepository,
     });
 
@@ -106,14 +105,14 @@ class AccountController {
   async updateTransaction(req, res) {
     const { updateTransaction, transactionRepository } = this.di;
     const { transactionId } = req.params;
-    const { accountId, value, type, from, to, anexo } = req.body;
+    const { accountId, value, type, from, to, anexo, date } = req.body;
     const transactionDTO = new TransactionDTO({
       accountId,
       value,
       from,
       to,
       type,
-      date: new Date(),
+      date: new Date(date),
       anexo,
     });
     const transaction = await updateTransaction({

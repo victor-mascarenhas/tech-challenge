@@ -9,12 +9,9 @@ import Image from "next/image";
 import userService from "@/services/userService";
 import { NovaContaDTO } from "@/shared/models/User";
 
-
-
 interface NovaContaForm extends NovaContaDTO {
   termoAceito: boolean;
 }
-
 
 interface NovaContaFormErrors {
   username?: string;
@@ -27,9 +24,14 @@ export default function NovaContaForm() {
   const [errors, setErrors] = useState<NovaContaFormErrors>({});
   const [showToast, setShowToast] = useState<boolean>(false);
   const [httpError, setHttpError] = useState<string>();
-  const [formValues, setFormValues] = useState<NovaContaForm>({ email: "", username: "", password: "", termoAceito: false });
-  const { create: createUser } = userService()
-  
+  const [formValues, setFormValues] = useState<NovaContaForm>({
+    email: "",
+    username: "",
+    password: "",
+    termoAceito: false,
+  });
+  const { create: createUser } = userService();
+
   function handleOnChange(field: string, value: any) {
     setFormValues({ ...formValues, [field]: value });
   }
@@ -49,18 +51,17 @@ export default function NovaContaForm() {
         password: formValues.password,
       };
 
-      const resp = await createUser(data)
+      const resp = await createUser(data);
 
-        if (resp.status === 201) {
-          setShowToast(true);
+      if (resp.status === 201) {
+        setShowToast(true);
 
-          setTimeout(() => {
-            setShowToast(false);
-          }, 2000);
-        } else {
-          // Exibe o erro da API
-          setHttpError("Erro ao criar usuário");
-        }
+        setTimeout(() => {
+          setShowToast(false);
+        }, 2000);
+      } else {
+        setHttpError("Erro ao criar usuário");
+      }
     }
   }
 
@@ -82,14 +83,22 @@ export default function NovaContaForm() {
 
   return (
     <div className="flex items-center flex-col bg-fiap-white md:max-w-[90%] lg:w-[650px] max-md:mx-[60px] max-sm:mx-6 h-auto rounded-[8px]">
-      <Image className="py-6 z-10" src="/ilustracao-nova-conta.png" width={230} height={170} alt="Imagem do login" />
+      <Image
+        className="py-6 z-10"
+        src="/ilustracao-nova-conta.png"
+        width={230}
+        height={170}
+        alt="Imagem do login"
+      />
 
       <form
         className="flex items-center flex-col w-full px-12 pb-12 max-sm:px-4"
         onSubmit={criarConta}
         autoComplete="off"
       >
-        <h2 className="font-bold text-xl pb-5">Preencha os campos abaixo para criar sua conta corrente!</h2>
+        <h2 className="font-bold text-xl pb-5">
+          Preencha os campos abaixo para criar sua conta corrente!
+        </h2>
 
         <Input
           className="pb-5"

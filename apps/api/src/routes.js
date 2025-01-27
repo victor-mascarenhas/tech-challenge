@@ -63,8 +63,8 @@ router.put(
  *       200:
  *         description: Transação atualizada com sucesso
  */
-router.put(
-  "/account/transaction/:transactionId/delete",
+router.delete(
+  "/account/transaction/:transactionId",
   accountController.deleteTransaction.bind(accountController)
 );
 

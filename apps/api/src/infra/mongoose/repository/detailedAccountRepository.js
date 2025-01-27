@@ -18,7 +18,8 @@ const update = async (id, updatedData) => {
 };
 
 const deleteById = async (id) => {
-  return DetailedAccount.findByIdAndDelete(id);
+  const result = await DetailedAccount.findByIdAndDelete(id);
+  return result;
 };
 
 module.exports = {

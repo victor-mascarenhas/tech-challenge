@@ -4,7 +4,10 @@ export function formatarMoeda(valor: number): string {
   return valor.toLocaleString("pt-br", { style: "currency", currency: "BRL" });
 }
 
-export function formatarData(data: Date, formato: FormatoData = FormatoData.PADRAO): string {
+export function formatarData(
+  data: Date,
+  formato: FormatoData = FormatoData.PADRAO
+): string {
   switch (formato) {
     case FormatoData.DIA_SEMANA_DIA_MES_ANO:
       return data.toLocaleDateString("pt-br", {
@@ -12,12 +15,22 @@ export function formatarData(data: Date, formato: FormatoData = FormatoData.PADR
         day: "2-digit",
         month: "2-digit",
         year: "numeric",
+        timeZone: "UTC",
       });
     case FormatoData.DIA_MES:
-      return data.toLocaleDateString("pt-br", { day: "2-digit", month: "2-digit" });
+      return data.toLocaleDateString("pt-br", {
+        day: "2-digit",
+        month: "2-digit",
+        timeZone: "UTC",
+      });
     case FormatoData.MES:
       return data.toLocaleDateString("pt-br", { month: "long" });
     default:
-      return data.toLocaleDateString("pt-br");
+      return data.toLocaleDateString("pt-br", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        timeZone: "UTC",
+      });
   }
 }

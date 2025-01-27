@@ -1,19 +1,28 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import {
   Transaction,
   TransactionResponse,
   TransactionResult,
 } from "@/shared/models/Account";
-import { TransactionForm } from "@/components/layout/transacao/FormNovaTransacao";
+import { TransactionForm } from "@/components/forms/CreateTransactionForm";
 import buildAccountService from "@/services/accountService";
+import { getAccountInfo } from "../user/userSlice";
 
 export interface TransactionsState {
   transactions: Transaction[];
+  filteredTransactions: {
+    filter: "None" | "Credit" | "Debit";
+    items: Transaction[];
+  };
   balance: number;
 }
 
 const initialState: TransactionsState = {
   transactions: [],
+  filteredTransactions: {
+    filter: "None",
+    items: [],
+  },
   balance: 0,
 };
 
@@ -23,12 +32,13 @@ const reduceTransactions = (transactions: Transaction[], initial: number) => {
 
 export const getStatements = createAsyncThunk(
   "transactions/statement",
-  async (accountId: string) => {
+  async (accountId: string, { dispatch }) => {
     const { getStatement } = buildAccountService();
     const response = await (<Promise<TransactionResult>>(
       getStatement(accountId)
     ));
     if (response.transactions) {
+      dispatch(updateFilteredTransactions());
       return response.transactions;
     }
     return [];
@@ -42,11 +52,8 @@ export const createTransaction = createAsyncThunk(
     const response = await (<Promise<TransactionResponse>>(
       createTransaction(data)
     ));
-    if (response.result) {
-      dispatch(getStatements(data.accountId));
-      return response;
-    }
-    return {};
+    dispatch(getAccountInfo());
+    return response;
   }
 );
 
@@ -66,9 +73,8 @@ export const updateTransaction = createAsyncThunk(
     const response = await (<Promise<TransactionResponse>>(
       updateTransaction(transactionId, data)
     ));
-    /* if (response.result) {
-      dispatch(updateBalance(response.result));
-    } */
+    dispatch(getAccountInfo());
+
     return response;
   }
 );
@@ -80,9 +86,7 @@ export const deleteTransaction = createAsyncThunk(
     const response = await (<Promise<TransactionResponse | null>>(
       deleteTransaction(transactionId)
     ));
-    if (response?.result) {
-      dispatch(updateBalance(response.result));
-    }
+    dispatch(getAccountInfo());
 
     return response;
   }
@@ -92,29 +96,42 @@ const transactionsSlice = createSlice({
   name: "transactions",
   initialState,
   reducers: {
+    updateFilteredTransactions(state) {
+      state.filteredTransactions.items = state.transactions;
+    },
     updateBalance(state, action) {
       state.balance += action.payload;
     },
+    filterTransactions(state, action) {
+      const filter = action.payload.filter;
+      state.filteredTransactions.filter = filter;
+
+      const endDate = action.payload.endDate
+        ? new Date(action.payload.endDate)
+        : new Date();
+      const startDate = action.payload.startDate;
+      const allTransactions = state.transactions;
+
+      state.filteredTransactions.items = allTransactions.filter((transac) => {
+        const typeFilter = filter === "None" || transac.type === filter;
+
+        const dateFilter =
+          (!startDate || new Date(transac.date) >= new Date(startDate)) &&
+          (!action.payload.endDate || new Date(transac.date) <= endDate);
+
+        return typeFilter && dateFilter;
+      });
+    },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(getStatements.fulfilled, (state, action) => {
-        state.transactions = action.payload;
-        state.balance = reduceTransactions(action.payload, 0);
-      })
-      .addCase(deleteTransaction.fulfilled, (state, action) => {
-        if (action.payload?.result) {
-          const rest = state.transactions.filter(
-            (transac) =>
-              transac.id !== action.payload?.result.transactions[0].id
-          );
-          state.transactions = rest;
-          state.balance = reduceTransactions(rest, 0);
-        }
-      });
+    builder.addCase(getStatements.fulfilled, (state, action) => {
+      state.transactions = action.payload;
+      state.balance = reduceTransactions(action.payload, 0);
+    });
   },
 });
 
-export const { updateBalance } = transactionsSlice.actions;
+export const { updateBalance, filterTransactions, updateFilteredTransactions } =
+  transactionsSlice.actions;
 
 export default transactionsSlice.reducer;

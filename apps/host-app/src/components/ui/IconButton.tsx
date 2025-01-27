@@ -12,8 +12,6 @@ export default function IconButton(options: IconButtonOptions) {
         return "text-white bg-fiap-navy-blue border-none hover:bg-fiap-navy-blue-hover";
       case "black":
         return "text-white bg-black";
-      // case "transparent":
-      //   return "text-black bg-transparent border-black";
       case "gray":
         return "text-gray-600 bg-gray-200 border-none";
       default:

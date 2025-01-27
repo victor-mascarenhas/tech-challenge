@@ -1,4 +1,4 @@
-const { NextFederationPlugin } = require('@module-federation/nextjs-mf');
+const { NextFederationPlugin } = require("@module-federation/nextjs-mf");
 const path = require("path");
 
 module.exports = {
@@ -9,12 +9,12 @@ module.exports = {
     if (!options.isServer) {
       config.plugins.push(
         new NextFederationPlugin({
-          name: 'host',
+          name: "host",
           remotes: {
-            remote: 'remote@http://localhost:3001/remote.js',
+            remote: "remote@http://localhost:3001/remote.js",
           },
-          filename: 'static/chunks/remoteEntry.js',
-        }),
+          filename: "static/chunks/remoteEntry.js",
+        })
       );
     }
 

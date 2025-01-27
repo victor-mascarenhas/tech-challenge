@@ -1,11 +1,10 @@
 import { Transaction } from "./Account";
 
-export interface ListaTransacoesOptions {
-  transacoes: Transaction[];
+export interface ListTransactionsProps {
+  transactions: Transaction[];
   showActions: boolean;
-  accountId: string;
 }
-export interface TransacaoModalConfirmDeleteProps {
+export interface TransactionDeleteModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
@@ -26,7 +25,7 @@ export interface TransactionFormEditProps {
   onConfirmClicked: () => void;
   transaction: Transaction;
 }
-export interface TransacaoItemOptions {
+export interface TransactionItemProps {
   item: Transaction;
   showActions: boolean;
   onDownloadAttachmentClicked?: { (): void };

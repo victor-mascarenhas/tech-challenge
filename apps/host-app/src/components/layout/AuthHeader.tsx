@@ -5,10 +5,10 @@ import Image from "next/image";
 import Icon from "@/components/ui/Icon";
 import { useState } from "react";
 import Aside from "./Aside";
-import { HeaderLogadoOptions } from "../../shared/models/Header";
+import { AuthHeaderProps } from "../../shared/models/Header";
 import { useRouter } from "next/navigation";
 
-export default function HeaderLogado(options: HeaderLogadoOptions) {
+export default function AuthHeader(options: AuthHeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
@@ -17,7 +17,7 @@ export default function HeaderLogado(options: HeaderLogadoOptions) {
   };
 
   const deslogar = async () => {
-    localStorage.removeItem("token")
+    localStorage.removeItem("token");
     router.push("/");
   };
 
@@ -30,11 +30,22 @@ export default function HeaderLogado(options: HeaderLogadoOptions) {
           </button>
         </div>
 
-        <Button className="max-sm:hidden" text="Sair" color="green" onClick={deslogar}></Button>
+        <Button
+          className="max-sm:hidden"
+          text="Sair"
+          color="green"
+          onClick={deslogar}
+        ></Button>
 
         <div className="flex items-center">
           <span className="pr-4 max-sm:hidden">{options.userName}</span>
-          <Image className="" src="/avatar-header.png" width={40} height={40} alt="Imagem da conta" />
+          <Image
+            className=""
+            src="/avatar-header.png"
+            width={40}
+            height={40}
+            alt="Imagem da conta"
+          />
         </div>
       </div>
 
@@ -49,7 +60,12 @@ export default function HeaderLogado(options: HeaderLogadoOptions) {
           </div>
 
           <div className="px-4 py-5 w-full">
-            <Button className="w-full" text="Sair" color="green" onClick={deslogar}></Button>
+            <Button
+              className="w-full"
+              text="Sair"
+              color="green"
+              onClick={deslogar}
+            ></Button>
           </div>
         </div>
       )}

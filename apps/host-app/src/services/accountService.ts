@@ -6,7 +6,7 @@ import {
 import { buildAxiosService } from "./axiosService";
 
 const buildAccountService = () => {
-  const { get, post, put } = buildAxiosService();
+  const { get, post, put, del } = buildAxiosService();
 
   const getAccount = async (): Promise<Result> => {
     try {
@@ -69,7 +69,7 @@ const buildAccountService = () => {
 
   const deleteTransaction = async (transactionId: string) => {
     try {
-      const resp = await put(`/account/transaction/${transactionId}/delete`);
+      const resp = await del(`/account/transaction/${transactionId}`);
       return resp.data;
     } catch (e) {
       console.log(e);

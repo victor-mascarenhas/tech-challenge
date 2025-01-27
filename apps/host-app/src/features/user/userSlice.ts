@@ -3,11 +3,16 @@ import Router from "next/router";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import buildAccountService from "@/services/accountService";
 import { Result } from "@/shared/models/Account";
+import { getStatements } from "../transactions/transactionsSlice";
 
-export interface userState {
+export interface UserLocalStorage {
   token: string | null;
   username: string | null;
   email: string | null;
+  isAuth: boolean;
+}
+
+export interface UserState extends UserLocalStorage {
   account: Result | null;
 }
 interface credentials {
@@ -15,27 +20,35 @@ interface credentials {
   password: string;
 }
 
-export const getTokenFromLocalStorage = (): string | null => {
+export const getFromLocalStorage = (): UserLocalStorage => {
   if (typeof window !== "undefined" && typeof localStorage !== "undefined") {
     const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        return JSON.parse(token);
-      } catch (error) {
-        console.error("Erro ao analisar o token do localStorage:", error);
-      }
+    const username = localStorage.getItem("username");
+    const email = localStorage.getItem("email");
+    if (token && username && email) {
+      return {
+        isAuth: true,
+        token: JSON.parse(token) || null,
+        username: JSON.parse(username) || null,
+        email: JSON.parse(username) || null,
+      };
     }
   }
-  return null;
+  console.error("Erro ao analisar o token do localStorage");
+  return {
+    isAuth: false,
+    token: null,
+    username: null,
+    email: null,
+  };
 };
 
-const isAuth = !!getTokenFromLocalStorage();
-
-const initialState: userState = {
-  token: getTokenFromLocalStorage(),
+const initialState: UserState = {
+  token: "",
   username: null,
   email: null,
   account: null,
+  isAuth: false,
 };
 
 export const signIn = createAsyncThunk<
@@ -46,6 +59,8 @@ export const signIn = createAsyncThunk<
   const response = await auth(credentials);
   if (response.token) {
     localStorage.setItem("token", JSON.stringify(response.token));
+    localStorage.setItem("username", JSON.stringify(response.username));
+    localStorage.setItem("email", JSON.stringify(credentials.email));
     return { ...response, email: credentials.email };
   }
   return { token: null, username: null, email: null };
@@ -53,14 +68,16 @@ export const signIn = createAsyncThunk<
 
 export const getAccountInfo = createAsyncThunk<Result | undefined>(
   "user/account",
-  async () => {
+  async (_, { dispatch }) => {
     const { getAccount } = buildAccountService();
     const response = await getAccount();
+    if (response.account) {
+      dispatch(getStatements(response.account[0].id));
+    }
     return response;
   }
 );
 
-// Slice
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -69,6 +86,11 @@ const userSlice = createSlice({
       localStorage.removeItem("token");
       state.token = null;
       Router.push("/");
+    },
+    login(state) {
+      state.token = getFromLocalStorage().token;
+      state.username = getFromLocalStorage().username;
+      state.email = getFromLocalStorage().email;
     },
   },
   extraReducers: (builder) => {
@@ -89,6 +111,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { logout } = userSlice.actions;
+export const { logout, login } = userSlice.actions;
 
 export default userSlice.reducer;

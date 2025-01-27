@@ -9,57 +9,56 @@ import { AppDispatch } from "@/store";
 import { createTransaction } from "@/features/transactions/transactionsSlice";
 import { useSelector } from "react-redux";
 
-export interface TransactionForm  {
+export interface TransactionForm {
   accountId: string;
   type: "Credit" | "Debit";
   value: number;
-};
+  date: Date;
+}
 
-export default function FormNovaTransacao() {
+export default function CreateTransactionForm() {
   const [data, setData] = useState<TransactionForm>({
-    accountId: '',
+    accountId: "",
     type: "Credit",
     value: 0,
+    date: new Date(),
   });
   const dispatch = useDispatch<AppDispatch>();
-  const userInfo = useSelector((state: any) => state.user)
-  const accountInfo = userInfo.account?.account[0]
+  const userInfo = useSelector((state: any) => state.user);
+  const accountInfo = userInfo.account?.account[0];
 
   useEffect(() => {
-    if(accountInfo){
-      handleChange('accountId',accountInfo.id)
+    if (accountInfo) {
+      handleChange("accountId", accountInfo.id);
     }
-    
-  },[accountInfo])
-
-  
+  }, [accountInfo]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    try {
-      await dispatch(createTransaction(data)) 
-      resetForm();
-
-    } catch (error) {
-      console.error("Erro ao adicionar transação:", error);
-      alert("Erro ao adicionar transação. Tente novamente mais tarde.");
+    if (data.accountId) {
+      try {
+        await dispatch(createTransaction(data));
+        /* dispatch(getStatements(accountInfo.id)); */
+        resetForm();
+      } catch (error) {
+        console.error("Erro ao adicionar transação:", error);
+        alert("Erro ao adicionar transação. Tente novamente mais tarde.");
+      }
     }
   };
 
   const handleChange = (name: string, value: string | number) => {
     setData((prevData) => ({
-      ...prevData,            
+      ...prevData,
       [name]: value,
     }));
   };
 
   const resetForm = () => {
-    setData({
-      accountId: '',
-    type: "Credit",
-    value: 0,
-    });
+    setData((prevData) => ({
+      ...prevData,
+      value: 0,
+    }));
   };
 
   const inputOptions: InputSelectOption[] = [

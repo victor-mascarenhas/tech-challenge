@@ -1,3 +1,3 @@
-export interface HeaderLogadoOptions {
-    userName: string;
-  }
+export interface AuthHeaderProps {
+  userName: string;
+}

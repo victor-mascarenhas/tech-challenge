@@ -1,22 +1,22 @@
 "use client";
 
 import React, { useState } from "react";
-import { ListaTransacoesOptions } from "../../../shared/models/Transaction";
-import TransacaoConfirmDelete from "./TransacaoConfirmDelete";
-import TransacaoItem from "./TransacaoItem";
-import TransacaoEditModal from "./TransacaoEditModal";
+import { ListTransactionsProps } from "../../shared/models/Transaction";
+import TransactionDeleteModal from "../Modal/TransactionDeleteModal";
+import TransactionItem from "./TransactionItem";
+import TransacaoEditModal from "../Modal/TransacaoEditModal";
 import { AppDispatch } from "@/store";
 import { useDispatch } from "react-redux";
 import { deleteTransaction } from "@/features/transactions/transactionsSlice";
 import { Transaction } from "@/shared/models/Account";
 
-
-export default function ListaTransacoes(options: ListaTransacoesOptions) {
-  
+export default function ListTransactions(options: ListTransactionsProps) {
   const [confirmDeleteIsOpen, setConfirmDeleteIsOpen] = useState(false);
   const [editIsOpen, setEditIsOpen] = useState(false);
-  const [selectedTransac, setSelectedTransac] = useState<Transaction | null>(null);
-  const dispatch: AppDispatch = useDispatch();  
+  const [selectedTransac, setSelectedTransac] = useState<Transaction | null>(
+    null
+  );
+  const dispatch: AppDispatch = useDispatch();
 
   function handleDelete(transac: Transaction) {
     setSelectedTransac(transac);
@@ -30,18 +30,12 @@ export default function ListaTransacoes(options: ListaTransacoesOptions) {
     setEditIsOpen(true);
   }
 
-  function confirmarDelete() {
-    if (selectedTransac) {     
-  
-      dispatch(
-        deleteTransaction(
-          selectedTransac.id
-        )
-      );
+  function confirmedDeletion() {
+    if (selectedTransac) {
+      dispatch(deleteTransaction(selectedTransac.id));
       fecharModal();
     }
   }
-   
 
   function confirmarEdit() {
     if (selectedTransac) {
@@ -58,9 +52,9 @@ export default function ListaTransacoes(options: ListaTransacoesOptions) {
   return (
     <>
       <ul className="flex flex-col gap-5 text-left pt-5">
-        {options.transacoes?.length > 0 ? (
-          options.transacoes.map((tran, index) => (
-            <TransacaoItem
+        {options.transactions?.length > 0 ? (
+          options.transactions.map((tran, index) => (
+            <TransactionItem
               key={tran.id || index}
               item={tran}
               showActions={options.showActions}
@@ -69,16 +63,18 @@ export default function ListaTransacoes(options: ListaTransacoesOptions) {
             />
           ))
         ) : (
-          <span className="text-gray-500 text-center">Nenhuma transação encontrada</span>
+          <span className="text-gray-500 text-center">
+            Nenhuma transação encontrada
+          </span>
         )}
       </ul>
 
       {options.showActions && selectedTransac && (
         <>
-          <TransacaoConfirmDelete
+          <TransactionDeleteModal
             isOpen={confirmDeleteIsOpen}
             onClose={fecharModal}
-            onConfirm={confirmarDelete}
+            onConfirm={confirmedDeletion}
             type={selectedTransac.type}
             value={selectedTransac.value}
             date={selectedTransac.date}

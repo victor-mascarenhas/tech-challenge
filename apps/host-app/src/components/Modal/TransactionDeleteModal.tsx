@@ -1,13 +1,15 @@
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 import React from "react";
-import { TransacaoModalConfirmDeleteProps } from "@/shared/models/Transaction";
+import { TransactionDeleteModalProps } from "@/shared/models/Transaction";
 
-export default function TransacaoConfirmDelete(options: TransacaoModalConfirmDeleteProps) {
+export default function TransactionDeleteModal(
+  options: TransactionDeleteModalProps
+) {
   const map = {
     Credit: "Depósito",
     Debit: "Transferência",
-  }
+  };
   return (
     <Modal isOpen={options.isOpen}>
       <h3 className="text-lg font-semibold mb-4">Excluir transação?</h3>
@@ -23,7 +25,12 @@ export default function TransacaoConfirmDelete(options: TransacaoModalConfirmDel
 
       <div className="mt-6 flex justify-between gap-4">
         <Button text="Cancelar" color="red" onClick={options.onClose} />
-        <Button text="Confirmar" color="green" disabled={options.isSubmitting} onClick={options.onConfirm} />
+        <Button
+          text="Confirmar"
+          color="green"
+          disabled={options.isSubmitting}
+          onClick={options.onConfirm}
+        />
       </div>
     </Modal>
   );

@@ -1,18 +1,15 @@
 "use client";
 
-import FormNovaTransacao from "./FormNovaTransacao";
+import CreateTransactionForm from "../forms/CreateTransactionForm";
 import Image from "next/image";
 
-
-export default function CardNovaTransacao() {
-
+export default function CreateTransaction() {
   return (
     <div className="flex relative max-sm:flex-col max-sm:h-[650px] w-full bg-fiap-light-gray rounded-[8px]">
       <div className="z-20 px-8 py-6">
         <h2 className="text-xl font-bold pb-3">Nova transação</h2>
 
-        <FormNovaTransacao
-        />
+        <CreateTransactionForm />
       </div>
 
       <Image
@@ -30,7 +27,13 @@ export default function CardNovaTransacao() {
         height={177}
         alt="pixels"
       />
-      <Image className="absolute bottom-0" src="/pixels-nova-transacao.svg" width={180} height={177} alt="pixels" />
+      <Image
+        className="absolute bottom-0"
+        src="/pixels-nova-transacao.svg"
+        width={180}
+        height={177}
+        alt="pixels"
+      />
     </div>
   );
 }

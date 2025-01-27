@@ -12,18 +12,9 @@
       "@shared/*": [
         "./src/shared"
       ],
-      "@hooks/*": [
-        "./src/hooks/*"
-      ],
-      "@repositories/*": [
-        "./src/repositories/*"
-      ],
       "@services/*": [
         "./src/services/*"
       ],
-      "@libs/db": [
-        "../../libs/db"
-      ]
     }
   },
   "include": [

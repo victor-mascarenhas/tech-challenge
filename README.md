@@ -3,7 +3,7 @@
 A intenção do projeto consistia em adaptar o projeto anterior para uma arquitetura micro-frontend.
 Tendo uma aplicação next.js como host, uma remota em react e consumindo uma api express.js com banco em mongoDB.
 
-## Inicialização do projeto em através de containers docker:
+## Inicialização do projeto através de containers docker:
 
 Execute o comando abaixo na pasta raíz do repositório.
 

@@ -1,4 +1,4 @@
-import { getTokenFromLocalStorage } from "@/features/user/userSlice";
+import { getFromLocalStorage } from "@/features/user/userSlice";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 type ConfigCall = {
@@ -17,6 +17,10 @@ type AxiosServiceProtocol = {
     data?: unknown,
     headers?: AxiosRequestConfig
   ) => Promise<AxiosResponse<T>>;
+  del: <T>(
+    path: string,
+    headers?: AxiosRequestConfig
+  ) => Promise<AxiosResponse<T>>;
 };
 
 export const buildAxiosService = (): AxiosServiceProtocol => {
@@ -30,7 +34,7 @@ export const buildAxiosService = (): AxiosServiceProtocol => {
   axiosInstance.interceptors.request.use(
     (config) => {
       if (typeof window !== "undefined") {
-        const token = getTokenFromLocalStorage();
+        const token = getFromLocalStorage().token;
         if (token && config.headers) {
           config.headers.Authorization = `Bearer ${token}`;
         }
@@ -59,9 +63,15 @@ export const buildAxiosService = (): AxiosServiceProtocol => {
     headers?: AxiosRequestConfig
   ): Promise<AxiosResponse<T>> => axiosInstance.put(path, data, headers);
 
+  const del = <T>(
+    path: string,
+    headers?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>> => axiosInstance.delete(path, headers);
+
   return {
     get,
     post,
     put,
+    del,
   };
 };
