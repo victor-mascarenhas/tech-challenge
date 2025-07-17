@@ -19,7 +19,7 @@ module.exports = {
     port: 3001,
   },
   output: {
-    publicPath: "http://3.140.183.228:3001/",
+    publicPath: "http://localhost:3001/",
   },
   resolve: {
     extensions: [".ts", ".js", ".tsx"],
@@ -32,7 +32,7 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/, // Carrega os estilos do Tailwind
+        test: /\.css$/,
         use: ["style-loader", "css-loader", "postcss-loader"],
       },
     ],
@@ -43,7 +43,7 @@ module.exports = {
       library: { type: "var", name: "remote" },
       filename: "remote.js",
       exposes: {
-        "./Investiments": "./src/App",
+        "./App": "./src/App",
       },
       shared: {
         ...deps,
